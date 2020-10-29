@@ -8,8 +8,6 @@
     pic: picUrl
   };
 })(); */
-
-
 // Create Dino Objects
 const fetchDinos = async () => {
   let url = './dino.json';
@@ -17,46 +15,33 @@ const fetchDinos = async () => {
   const json = await response.json()
   return json;
 }
-
 //fetchDinos().then(data => createTiles(data));
-
 // Create Human Object
-
 // Use IIFE to get human data from form
-
-
+//Creates human object
+function createHuman(name, feets, inches, weight, diet) {
+  return {
+    name: name,
+    heightFeet: feets,
+    heightInches: inches,
+    weight: weight,
+    diet: diet
+  };
+}
 // Create Dino Compare Method 1
 // NOTE: Weight in JSON file is in lbs, height in inches.
-
-
 // Create Dino Compare Method 2
 // NOTE: Weight in JSON file is in lbs, height in inches.
-
-
 // Create Dino Compare Method 3
 // NOTE: Weight in JSON file is in lbs, height in inches.
-
-
 // Generate Tiles for each Dino in Array
-
 // Add tiles to DOM
-
 // Remove form from screen
-
-
 // On button click, prepare and display infographic
-
-
 //Validate form, store data in the variables, remove the form and prepare the grid
-const validateForm = () => {
+const validateForm = (name, feets, inches, weight) => {
   let valid = false;
   let message = '';
-  //get values form the form and set variables
-  const name = document.getElementById('name').value;
-  const feets = document.getElementById('feet').value;
-  const inches = document.getElementById('inches').value;
-  const weight = document.getElementById('weight').value;
-
   //validate form fields if not empty or invalid
   if (name === '') {
     message = 'gimme your name';
@@ -74,33 +59,25 @@ const validateForm = () => {
     message: message
   }
 }
-
-// if (document.getElementById('name').value !== '' && document.getElementById('feet').value > 0 && document.getElementById('inches').value > 0 && document.getElementById('weight').value > 0) {
-//   valid = true;
-// } else alert(`something's wrong with the form man!`);
-
-// return valid;
-
-
-let getHuman = () => {
-  return {
-    name: document.getElementById('name').value,
-    heightFeet: document.getElementById('feet').value,
-    heightInches: document.getElementById('inches').value,
-    weight: document.getElementById('weight').value,
-    diet: document.getElementById('diet').value
-  }
-};
-
-const removeForm = () => {
+//Removes the form from the DOM
+function removeForm() {
   const formUser = document.getElementById('dino-compare');
   formUser.remove();
 }
-
-const start = () => {
-  if (validateForm().verdict) {
-    let human = getHuman();
+//Here we start, executes on button click
+function start() {
+  //get values form the form and set variables
+  const name = document.getElementById('name').value;
+  const feets = document.getElementById('feet').value;
+  const inches = document.getElementById('inches').value;
+  const weight = document.getElementById('weight').value;
+  const diet = document.getElementById('diet').value;
+  //if the form is valid, create human object
+  const isValid = validateForm(name, feets, inches, weight)
+  if (isValid.verdict) {
+    let human = createHuman(name, feets, inches, weight, diet);
     console.log(human);
-  } else console.log(validateForm().message);
-
+    //if the form is not valid, alert the message
+  } else
+    alert(isValid.message);
 }
