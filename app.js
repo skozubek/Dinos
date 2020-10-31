@@ -11,7 +11,7 @@
 // Create Dino Objects
 // Fetch data from provided json file and return a promise
 async function fetchDinos() {
-  const url = './dino.json';
+  const url = './dino.jsongit';
   const response = await fetch(url);
   const json = await response.json();
   return json.Dinos;
