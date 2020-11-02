@@ -89,13 +89,13 @@ function validateForm(name, feets, inches, weight) {
   let message = '';
   // validate form fields if not empty or invalid
   if (name === '') {
-    message = 'gimme your name';
+    message = `C'monn gimme your name`;
   } else if (feets <= 0) {
-    message = 'cmonn, gimme proper feets';
+    message = `C'monn, gimme proper feets`;
   } else if (inches <= 0) {
-    message = 'cmonn, gimme proper inchesss';
+    message = `C'monn, gimme proper inchesss`;
   } else if (weight <= 0) {
-    message = 'cmonn, gimme proper weight';
+    message = `C'monn, gimme proper weight`;
   } else {
     valid = true;
   }
@@ -116,6 +116,21 @@ async function fetchDinos() {
   const json = await response.json();
   return json.Dinos;
 }
+// Create html element for the tile object
+function createTileHtml(tile) {
+  // create new div and its html based on tile's data
+  const tileElement = document.createElement(`div`);
+  tileElement.className = `grid-item`;
+  tileElement.innerHTML = `<h3>${tile.species}</h3><p>${tile.fact}</p><img src="${tile.url}"/>`;
+  return tileElement;
+}
+// Add tile to grid
+function addTileToGrid(gridItem) {
+  // add grid items html to grid
+  // add the newly created element and it's content into the DOM
+  const gridElement = document.getElementById('grid');
+  gridElement.appendChild(gridItem);
+}
 // Here we start, executes on button click
 function start() {
   // get values form the form and set variables
@@ -128,6 +143,7 @@ function start() {
   const isValid = validateForm(name, feets, inches, weight);
   // if it is proceed to create objects
   if (isValid.verdict) {
+    removeForm();
     // create human object
     const human = createHuman(name, feets, inches, weight, diet);
     // create dinos objects
@@ -143,7 +159,17 @@ function start() {
       }));
       // create dino tiles based on dino and human for comparsion
       const tiles = dinos.map((dino) => createDinoTile.create(dino, human));
-      console.log(tiles);
+      // Create grid based on the content of tiles objects
+      // add human tile in the middle of the grid (index of 4)
+      tiles.splice(4, 0, {
+        fact: human.name,
+        species: `Homo Sapiens`,
+        url: `./images/human.png`,
+      });
+      // Create html for all the tiles
+      const gridItems = tiles.map((tile) => createTileHtml(tile));
+      // ... and add them to the grid
+      gridItems.forEach((element) => addTileToGrid(element));
     })();
     // if the form is not valid, alert the message
   } else alert(isValid.message);
