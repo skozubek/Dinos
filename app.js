@@ -63,7 +63,7 @@ const createDinoTile = (function () {
     return {
       fact,
       species,
-      url,
+      url: url.toLowerCase(),
     };
   }
   return {
